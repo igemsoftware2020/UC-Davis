@@ -1,0 +1,151 @@
+#!/usr/bin/env python3
+
+import sporecore.motif as sm
+import argparse 
+
+parser = argparse.ArgumentParser(
+	description='Brief description of program.')
+# required arguments
+parser.add_argument('--fastafile', required=True, type=str,
+	metavar='<str>', help='Fasta promoter file')
+parser.add_argument('--memepath', required=False, type=str, default='meme',
+	metavar='<str>', help='path to motif finder[%(default)s]')
+parser.add_argument('--min_w', required=False, type=int, default=6,
+	metavar='<int>', help='min width for motifs found by meme[%(default)s]')
+parser.add_argument('--max_w', required=False, type=int, default=15,
+	metavar='<int>', help='max width for motifs found by meme[%(default)s]')
+parser.add_argument('--trim', required=False, type=int, default=200,
+	metavar='<int>', help='amount of promoter seqeunce used to search for motif\
+	[%(default)s]')
+parser.add_argument('--mememodel', required=False, type=str, default='zoops',
+	metavar='<str>', help='model used by motif-finder[%(default)s]')
+parser.add_argument('--markov_order', required=False, type=int, default=0,
+	metavar='<int>', help='markov model used by motif-finder[%(default)s]')
+parser.add_argument('--nummotifs', required=False, type=int, default=1,
+	metavar='<int>', help='numbers of motifs found by motif-finder[%(default)s]')
+parser.add_argument('--jasparfile', required=False, type=str,
+	metavar='<str>', help='Expected PWM for verification clusters[%(default)s]')
+
+parser.add_argument('--show_sites', action='store_true',
+	help='on/off switch')
+# finalization
+arg = parser.parse_args()
+
+m = arg.mememodel
+o = arg.markov_order
+maxw = arg.max_w
+minw = arg.min_w
+trim = arg.trim
+fastafile = arg.fastafile
+	
+
+def trim_fasta(fastafile, trim):
+	content = []
+	with open(fastafile) as fp:
+		strand = None
+		for line in fp.readlines():
+			line = line.rstrip()
+			if line.startswith('>'):
+				#print(line)
+				c, l, s = line.split()
+				#print('c',c)
+				#print('s',s)
+				if   s == '+': strand = s
+				elif s == '-': strand = s
+				content.append(f'{c} {trim} {s}')
+			else:
+				if   s == '+': seq = line[len(line)-trim:]
+				elif s == '-': seq = line[0:trim]
+				content.append(seq)
+	with open('motifomatic_temp.fa', 'w') as fp:
+		for line in content:
+			fp.write(line)
+			fp.write('\n')
+	return 'motifomatic_temp.fa'
+
+	
+def calcbg(promoterfile):
+	A = 0
+	C = 0
+	G = 0
+	T = 0
+	with open(promoterfile) as pf:
+		for line in pf.readlines():
+			if not line.startswith('>'): 
+				line = line.strip()
+				#print('line', line)
+				for i in range(len(line)):
+					if line[i] == 'A': A += 1 
+					if line[i] == 'C': C += 1 
+					if line[i] == 'G': G += 1 
+					if line[i] == 'T': T += 1 
+	total = A+C+G+T
+	if total > 0:
+		A = A/total
+		C = C/total
+		G = G/total
+		T = T/total 
+		background = {'A':A, 'C':C, 'G': G, 'T':T}
+		return background
+	else:
+		raise ValueError('Promoter file empty, check file parameters')	
+
+
+fasta = None
+if arg.trim:
+	fasta = trim_fasta(fastafile, trim)
+else:
+	fasta = fastafile
+
+
+#sys.stderr.write('running meme...')
+#os.system(f'meme {fasta} {memeopts} 2>/dev/null')
+#sys.stderr.write('done\n')
+
+print(fasta)
+
+def present_pwm(pwm):
+	A = []
+	C = []
+	G = []
+	T = []
+	for posi in pwm:
+		A.append(posi['A'])
+		C.append(posi['C'])
+		G.append(posi['G'])
+		T.append(posi['T']) 
+	return A, C, G, T
+
+
+
+motifs, meme_info, motif_info = sm.run_meme(arg.memepath,fasta,m,o,arg.nummotifs,maxw,minw)
+
+if arg.jasparfile:
+	exp_mot = sm.read_JASPAR(arg.jasparfile)
+	bg = calcbg(fasta)
+	perf = sm.performance_bg(exp_mot,motifs,bg)
+	assert(len(motifs)==len(perf))
+	
+	
+assert(len(motifs)==len(motif_info))
+for i in range(len(motifs)):
+	print('NAME:',motif_info[i][0],'WIDTH:',motif_info[i][1],'NUMBER OF SITES:', motif_info[i][2]\
+	, 'E VALUE:', motif_info[i][3], 'INFO IN BITS:', motif_info[i][4], 'BIT PERCENTAGE:', motif_info[i][5])
+	pwm = motifs[i]
+	if arg.jasparfile:
+		print('similarity score:', *perf[i])
+	A,C,G,T = present_pwm(pwm)
+	print('A',A)
+	print('C',C)
+	print('G',G)
+	print('T',T)
+	if arg.show_sites:
+		print('sequence', 'position', 'strand','p value', sep = '	')
+		for j in range(motif_info[i][2]):
+			print(meme_info[j][3],meme_info[j][4],meme_info[j][2],meme_info[j][5],sep='	')
+			
+	print('')
+
+
+
+

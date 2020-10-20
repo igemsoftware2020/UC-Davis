@@ -1,0 +1,173 @@
+#!/usr/bin/env python3
+
+import argparse
+import random
+import sporecore.motif as sm
+import math
+import os
+#import make_backgroundseq
+
+extended_help = """
+%(prog)s is a program that simulates promoter regions by embedding binding 
+sites in generated promoter sequences. The sites are randomly generated from a
+motif described in JASPAR format and the sequences are generated either by 
+simple base composition or markov analysis of background DNA sequence.
+"""
+
+parser = argparse.ArgumentParser(
+	description='Embeds instances of a motif into random sequences',
+	epilog=extended_help)
+parser.add_argument('--jasparfile', required=True, type=str,
+	metavar='<str>', help='directory path to jaspar file')
+parser.add_argument('--dnafile', required=False, type=str,
+	metavar='<str>', help='fasta file of promoters')
+parser.add_argument('--markov_order', required=False, type=int, default=0,
+	metavar='<int>', help='markov order of generated sequence [%(default)i]')
+parser.add_argument('--numseq', required=False, type=int, default=10,
+	metavar='<int>', help='number of sequences to generate [%(default)i]')
+parser.add_argument('--seqlen', required=False, type=int, default=100,
+	metavar='<int>', help='length of sequences to generate [%(default)i]')
+parser.add_argument('--mps', required=False, type=int, default=1,
+	metavar='<int>', help='number of motifs per seqeunce [%(default)i]')
+parser.add_argument('--freq', required=False, type=float, default=0.9,
+	metavar='<float>', help='optional floating point argument [%(default).3f]')	
+parser.add_argument('--PA', required=False, type=float, default=0.25,
+	metavar='<float>', help='optional floating point argument [%(default).3f]')
+parser.add_argument('--PC', required=False, type=float, default=0.25,
+	metavar='<float>', help='optional floating point argument [%(default).3f]')
+parser.add_argument('--PG', required=False, type=float, default=0.25,
+	metavar='<float>', help='optional floating point argument [%(default).3f]')
+parser.add_argument('--PT', required=False, type=float, default=0.25,
+	metavar='<float>', help='optional floating point argument [%(default).3f]')
+parser.add_argument('--bothstrands', action='store_true',
+	help='on/off switch')
+parser.add_argument('--negstrands', action='store_true',
+	help='on/off switch')	
+arg = parser.parse_args()
+
+if not arg.dnafile:
+	assert(arg.markov_order==0)
+	
+#print(arg.markov_order)
+	
+assert(math.isclose(arg.PA + arg.PC + arg.PG + arg.PT, 1.0))
+assert(arg.freq <= 1.0)
+if arg.bothstrands and arg.negstrands:
+	raise ValueError('Strandedness cannot be both and negative together')
+	
+def organize_dna(dnafile):
+	'''Extracts DNA sequence from fasta format and returns an extended string of DNA for markov analysis  '''
+	dna = ''
+	with open(dnafile) as df:
+		for line in df.readlines():
+			line = line.strip()
+			if not line.startswith('>'):
+				dna += line
+	return dna
+
+
+def make_kmerdict(k, dna):
+	'''Takes DNA sequence, finds each window of k size and records the window\
+	 and its next nucleotide in a dictionary '''
+	kmers = {}
+	for i in range(len(dna)-k):
+		ctx = dna[i:i+k]
+		nt = dna[i+k]
+		if ctx not in kmers:
+			kmers[ctx] = {}
+		if nt not in kmers[ctx]:
+			kmers[ctx][nt] = 0 
+		kmers[ctx][nt] += 1
+	#print(kmers)
+	if len(kmers) < 4**k:
+		raise ValueError('Not enough DNA sequence for markov order')
+	else:
+		return kmers
+
+
+
+def make_contextpool(kmers):
+	'''Finds all duplicate kmers in the markov dictionary and counts the
+	nucleotides   '''
+	pool = {}
+	for ctx in kmers:
+		pool[ctx] = '' 
+		for nt in kmers[ctx]:
+			pool[ctx] = pool[ctx] + kmers[ctx][nt]*nt
+	return pool
+
+def make_markovseq(k, pool,seqsize):
+	seq = ''
+	for i in range(k):
+		seq += random.choice('ACGT')
+	for i in range(k,seqsize):
+		prev = seq[i-k:i]
+		if prev in pool:
+			seq += random.choice(pool[prev])
+	return seq
+
+def generate_seq(numseq, seqlen, PA, PC, PG, PT):
+	seq = []
+	for i in range(0,arg.seqlen):
+		r  = random.random()
+		if r < PA:             seq += 'a'
+		elif r < PA + PC:      seq += 'c'
+		elif r < PA + PC + PG: seq += 'g'
+		else:                  seq += 't'
+	return seq
+
+
+def generate_markovseq(numseq,seqlen,data_file,k):
+	dna = organize_dna(arg.dnafile)
+	kmers = make_kmerdict(arg.markov_order,dna)
+	pool = make_contextpool(kmers)
+	seq = make_markovseq(arg.markov_order,pool,arg.seqlen)
+	seq = seq.lower()
+	list_seq = []
+	for i in range(len(seq)):
+		list_seq.append(seq[i])
+	return list_seq
+	
+
+
+motif = sm.read_JASPAR(arg.jasparfile)
+assert(len(motif) <= arg.seqlen)
+for i in range(0, arg.numseq):
+	if not arg.dnafile:
+		seq = (generate_seq(arg.numseq, arg.seqlen, arg.PA, arg.PC, arg.PG,\
+		arg.PT))
+		#print(arg.PA, arg.PC, arg.PG,arg.PT)
+	else:
+		seq = (generate_markovseq(arg.numseq,arg.seqlen,arg.dnafile,\
+		arg.markov_order))
+		#print(arg.markov_order)
+	r = random.random()
+	places = []
+	if r < arg.freq:
+		for j in range(0,arg.mps):
+			strand="+"
+			site = sm.generate_site(motif)
+			assert(len(motif)== len(site))
+			place = random.randint(0, len(seq)-len(motif))
+			if arg.bothstrands or arg.negstrands:
+				r = random.random()
+				if r < 0.5 and arg.bothstrands:
+					strand = '-'
+				if arg.negstrands:
+					strand = '-'
+				if strand == '-':
+					site.reverse()
+					for l in range(len(site)):
+						if site[l] == 'A':
+							site[l] = 'T'
+						elif site[l] == 'C':
+							site[l] = 'G'
+						elif site[l] == 'G':
+							site[l] = 'C'
+						elif site[l] == 'T':
+							site[l] = 'A'
+			places.append(f'{place} {strand}')
+			for k in range(0,len(site)):
+				seq[place+k] = site[k]
+	print(f'>seq-{i} {places}')
+	print(''.join(seq))
