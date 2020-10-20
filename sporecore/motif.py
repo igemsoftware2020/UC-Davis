@@ -1,6 +1,7 @@
-#!/usr/bin/env python3
 import random
 import math
+import os
+import statistics
 
 
 
@@ -150,27 +151,7 @@ def generate_site(motif):
 		else:                    motifseq += 'T'
 	return motifseq
 	
-def new_pwm(sites):
-	'''Accepts an array of binding site sequences and produces a position 
-	weight matrix from them '''
-	newmot =[]
-	for i in range(len(sites[0])):
-		A = 0
-		C = 0
-		G = 0
-		T = 0
-		newmot.append({})
-		for j in range(len(sites)):
-			s = sites[j][i]
-			if s == 'A': A += 1
-			elif s == 'C': C += 1
-			elif s == 'G': G += 1
-			elif s == 'T': T += 1
-		newmot[i]['A'] = A/len(sites)
-		newmot[i]['C'] = C/len(sites)
-		newmot[i]['G'] = G/len(sites)
-		newmot[i]['T'] = T/len(sites)
-	return newmot
+
 	
 #meme.txt files do not find false negatives 
 
@@ -338,3 +319,253 @@ def score_motifbit(motif):
 	else:
 		p = ''
 	return score, p
+	
+#memetools
+
+'''
+def convert_argtovar(minprom, maxprom, promstep, minseq,maxseq,seqstep):
+	Accepts command line parameter arguments and converts them to ranges of
+	parameters to be tested in MEME
+	promoter = []
+	num_seq = []
+	for i in range(minprom,maxprom+1,promstep):
+		if i != 0:
+			promoter.append(i)
+	for i in range(minseq,maxseq+1,seqstep):
+		if i != 0:
+			num_seq.append(i)
+	return promoter, num_seq
+	
+	
+
+#fix generate promter to create files for condenseddata
+def generate_promoter_mo(dnafile, jasparfile, p, n, o, freq,i): 
+	Creates a fasta file of promoter sequences with embedded binding motifs.
+	Background sequence is generated using markov models of DNA sequence from a
+	fasta file input
+	tmpfile = f'/tmp/testmotif{os.getpid()}_{p}_{n}_{i}.fa' 
+	#f'python3 markov_Mbed.py --jasparfile {jasparfile} \
+	#--dnafile {dnafile} --markov_order {o} --numseq {n} --seqlen {p} --freq \
+	#{freq} --bothstrands > {tmpfile} '
+	cmd = f'python3 markov_Mbed.py --jasparfile {jasparfile} \
+	--dnafile {dnafile} --markov_order {o} --numseq {n} --seqlen {p} --freq \
+	{freq} --bothstrands > {tmpfile} '
+	os.system(cmd)
+	return tmpfile
+
+def generate_promoter_bg(jasparfile, p, n, freq, background,i,condenseddata):
+	Creates a fasta file of promoter sequences with embedded binding motifs.
+	Background sequence is generated using a nucleotide distribution frequency
+	input from the command line.
+	tmpfile = f'/tmp/testmotif{os.getpid()}_{p}_{n}_{i}.fa' 
+	cmd = f'python3 Mbed.py --jasparfile {jasparfile} \
+	--numseq {n} --seqlen {p} --freq {freq} --PA {background["A"]} --PC \
+	{background["C"]} --PG {background["G"]} --PT {background["T"]} \
+	--bothstrands > {tmpfile} '
+	os.system(cmd)
+	return tmpfile
+'''
+	
+
+def calcbg_frompromfile(promoterfile):
+	'''Calculates a nucleotide distribution frequency for the background 
+	DNA sequence from the promoters in the generated FASTA file'''
+	A = 0
+	C = 0
+	G = 0
+	T = 0
+	with open(promoterfile) as pf:
+		for line in pf.readlines():
+			if not line.startswith('>'): 
+				line = line.strip()
+				#print('line', line)
+				for i in range(len(line)):
+					if line[i] == 'a': A += 1 
+					if line[i] == 'c': C += 1 
+					if line[i] == 'g': G += 1 
+					if line[i] == 't': T += 1 
+	total = A+C+G+T
+	if total > 0:
+		A = A/total
+		C = C/total
+		G = G/total
+		T = T/total 
+		background = {'A':A, 'C':C, 'G': G, 'T':T}
+		return background
+	else:
+		raise ValueError('Promoter file empty, check file parameters')	
+	
+def run_meme(memepath,promoterfile,m,o,nummotifs,maxw,minw):
+	'''Will compile selected meme parameters into a command to run downloaded
+	MEME software, and then will extract important information from meme output
+	file. '''
+	meme = f'{memepath} {promoterfile} -dna -markov_order {o} -mod {m}\
+	-nmotifs {nummotifs} -maxw {maxw} -minw {minw} -revcomp 2>/dev/null'
+	os.system(meme)
+	meme_info = read_memetxt('meme_out/meme.txt')
+	motifs, motif_info = memepwm('meme_out/meme.txt')
+	return motifs, meme_info, motif_info
+	
+#can combine these now	
+#performance hands back one number 
+def performance_bg(motif,motifs,background):
+	'''Finds global similarity score between the given motif and the motif
+	found by meme '''
+	scores = []
+	for i in range(len(motifs)):
+		memepwm = motifs[i]
+		score = global_motcompare(motif,memepwm,background)
+		scores.append(score)
+	return scores
+	
+def performance_mo(motif,motifs):
+	'''Finds local similarity score between the given motif and the motif found
+	 by meme.'''
+	scores = []
+	for i in range(len(motifs)):
+		memepwm = motifs[i]
+		score = local_motcompare(motif,memepwm)
+		scores.append(score)
+	return scores
+
+def get_memedata(promoter_file, meme_info, j_info, distance_scores, motif_info\
+,jpwm,p,n,m,o,iteration):
+	'''Assembles data extracted from the meme output into a single array that
+	 can be displayed or further analyzed '''
+	result = []
+	fp = 0
+	fn = []
+	for i in range(len(meme_info)):
+		seq = meme_info[i][3]
+		motif = meme_info[i][0]
+		nsites = meme_info[i][1]
+		m_strand = meme_info[i][2]
+		m_pos = meme_info[i][4]
+		p_val = meme_info[i][5]
+		for j in range(len(j_info)):
+			if seq == j_info[j][0]:
+				j_pos = j_info[j][1][0]
+				if j_pos != '':
+					j_strand = j_info[j][1][1]
+				else:
+					j_strand = ''
+				break
+		for j in range(len(motif_info)):
+			if motif == motif_info[j][0]:
+				score = distance_scores[j][0] 
+				p_score = distance_scores[j][1]
+				meme_wid = motif_info[j][1]
+				meme_eval = motif_info[j][3]
+				break	
+		fpos,posdis,fl,overlap,overlap_p = pos_accuracy(m_pos, j_pos,\
+		meme_wid,len(jpwm))
+		result.append((promoter_file, seq, motif,nsites,m_pos, m_strand,\
+		meme_wid,j_pos,j_strand,len(jpwm),p_val,score,p_score,meme_eval,fpos\
+		,0,posdis,fl,overlap,overlap_p,p,n,m,o,iteration))
+		fn.append(seq)
+	return result,fn
+
+
+#need to fix false negs everything 
+def find_falsenegs(fn,j_info,p,n,m,o,promoter_file,jpwm,iteration):
+	'''Determines which promoters with embedded motifs from the fasta files
+	were not detected by meme. '''
+	#print('j_info',j_info)
+	#print('fn',fn)
+	false_negs = []
+	for i in range(len(j_info)):
+		#print('j_info[i][0]',j_info[i][0])
+		#print(fn[i])
+		if j_info[i][0] not in fn:
+			if j_info[i][1][0] != '':
+				#print('is it ""?',j_info[i][1][0])
+				false_negs.append(( promoter_file,j_info[i][0],'','','','','',\
+				j_info[i][1][0],j_info[i][1][1],len(jpwm),'','','','',0,1,99,1\
+				,'','',p,n,m,o,iteration))
+	return false_negs	
+
+
+
+def find_condensedstats(result,fn,motif_info,j_info,promoter_file,bits,p_bits,\
+p,n,m,o,false_neg,numjsites,iteration):
+	'''Creates condensed meme results focused on the performance of each motif
+	 found in meme '''
+	condensed_stats = []
+	for i in range(len(motif_info)):
+		fl_ct = 0
+		fp_ct = 0
+		for j in range(len(result)):
+			if result[j][2] == motif_info[i][0]:
+				nsites = int(result[j][3])
+				fl_ct += (result[j][17])
+				fp_ct += (result[j][14])
+				score = (result[j][11])
+				score_p = (result[j][12])
+				evalue = (result[j][13])
+		condensed_stats.append((promoter_file,motif_info[i][0],nsites,bits,p_bits,\
+		evalue,score,score_p,fl_ct/nsites,(nsites-fl_ct)/nsites,\
+		fp_ct/nsites,len(false_neg)/numjsites,p,n,m,o,iteration))
+	return condensed_stats	
+
+
+#make sure this is good, make uncondensed have file name
+def present_info(promoter_file,results, bits,p_bits,scores,fn,\
+	j_info,motif_info,p,n,m,o,condenseddata):
+	'''Determines what presentation of data should look like based on the input 
+	parameters '''
+	present = []
+	false_neg = find_falsenegs(fn, j_info,p,n,m,o,promoter_file)
+	if condenseddata:
+		present = (find_condensedstats(results,fn,motif_info,j_info,\
+		promoter_file,bits,p_bits,p,n,m,o))		
+	else:
+		 for i in range(len(results)):
+		 	present.append((results[i]))
+		 for i in range(len(false_neg)):
+		 	present.append(false_neg[i])
+	return present
+	
+
+
+def avg_condensedstats(final,motif_info,p,n,m,o,r):
+	'''Averages performance of condensed motif information for a more accurate
+	 understanding of motif performance '''
+	output = []
+	if len(final) > 1:
+		for i in range(len(motif_info)):
+			mot = motif_info[i][0]
+			avg_nsites = []
+			avg_score = []
+			avg_eval = []
+			avg_score = []
+			avg_pscore = []
+			avg_frate = []
+			avg_srate = []
+			avg_fprate = []
+			avg_fnrate = []
+			for j in range(len(final)):
+				for k in range(len(final[j])):
+					if  mot == final[j][k][1]:
+						avg_nsites.append(final[j][k][2])
+						avg_eval.append(final[j][k][5])
+						avg_score.append(final[j][k][6])
+						avg_pscore.append(final[j][k][7])
+						avg_frate.append(final[j][k][8])
+						avg_srate.append(final[j][k][9])
+						avg_fprate.append(final[j][k][10])
+						avg_fnrate.append(final[j][k][11])
+			output.append((final[j][k][0],mot,statistics.mean(avg_nsites),\
+			final[j][k][2],final[j][k][3], statistics.mean(avg_eval),\
+			statistics.mean(avg_score), statistics.mean(avg_pscore),\
+			statistics.mean(avg_frate), statistics.mean(avg_srate),\
+			statistics.mean(avg_fprate),statistics.mean(avg_fnrate),p,n,m,o,\
+			r+1,statistics.stdev(avg_eval),statistics.stdev(avg_score)\
+			,statistics.stdev(avg_pscore),statistics.stdev(avg_frate),\
+			statistics.stdev(avg_srate),statistics.stdev(avg_fprate)\
+			,statistics.stdev(avg_fnrate)))
+		return output
+	else:
+		for i in range(len(final)):
+			for j in range(len(final[i])):
+				output.append(final[i][j])
+		return output
