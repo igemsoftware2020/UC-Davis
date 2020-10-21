@@ -3,7 +3,94 @@ import math
 import os
 import statistics
 
+NT = ['A', 'C', 'G', 'T']
 
+IUPAC = {
+	'A': {'A':1, 'C':0, 'G':0, 'T':0},
+	'C': {'A':0, 'C':1, 'G':0, 'T':0},
+	'G': {'A':0, 'C':0, 'G':1, 'T':0},
+	'T': {'A':0, 'C':0, 'G':0, 'T':1},
+	'R': {'A':0.5, 'C':0.0, 'G':0.5, 'T':0.0},
+	'Y': {'A':0.0, 'C':0.5, 'G':0.0, 'T':0.5},
+	'M': {'A':0.5, 'C':0.5, 'G':0.0, 'T':0.0},
+	'K': {'A':0.0, 'C':0.0, 'G':0.5, 'T':0.5},
+	'W': {'A':0.5, 'C':0.0, 'G':0.0, 'T':0.5},
+	'S': {'A':0.0, 'C':0.5, 'G':0.5, 'T':0.0},
+	'B': {'A':0.01, 'C':0.33, 'G':0.33, 'T':0.33},
+	'D': {'A':0.33, 'C':0.01, 'G':0.33, 'T':0.33},
+	'H': {'A':0.33, 'C':0.33, 'G':0.01, 'T':0.33},
+	'V': {'A':0.33, 'C':0.33, 'G':0.33, 'T':0.01},
+	'N': {'A':0.25, 'C':0.25, 'G':0.25, 'T':0.25},
+}
+
+def manhattan(d1, d2):
+	d = 0
+	for nt in NT:
+		d += abs(d1[nt] - d2[nt])
+	return d
+
+def motif2seq(m):
+	seq = []
+	for i in range(len(m)):
+		min = 1e9
+		best = None
+		for s in IUPAC:
+			d = manhattan(m[i], IUPAC[s])
+			if d < min:
+				min = d
+				best = s
+		seq.append(best)
+	return ''.join(seq)
+	
+def anti_motif(m):
+	a = []
+	for i in range(len(m)):
+		d = {}
+		d['A'] = m[i]['T']
+		d['C'] = m[i]['G']
+		d['G'] = m[i]['C']
+		d['T'] = m[i]['A']
+		a.append(d)
+	reversed(a)
+	return a
+
+def motif_similarity(m1, m2):
+	m = []
+	maxpos = None
+	#print(len(m1))
+	#print(len(m2))
+	if len(m1) <= len(m2):
+		#print('true')
+		maxpos = 2*len(m1)
+	else:
+		#print('false')
+		maxpos = 2*len(m2)
+	
+	for i in range(len(m1)):
+		m.append([])
+		for j in range(len(m2)): m[i].append([])
+	
+	# init first row and column
+	for i in range(len(m1)): m[i][0] = 2 - manhattan(m1[i], m2[0])
+	for j in range(len(m2)): m[0][j] = 2 - manhattan(m1[0], m2[j])
+
+	# compute diagonals and find best score
+	max_score = 0	
+	for i in range(1, len(m1)):
+		for j in range(1, len(m2)):
+			m[i][j] = m[i-1][j-1] + 2 - manhattan(m1[i], m2[j])
+			if m[i][j] > max_score:
+				max_score = m[i][j]
+	score_p = max_score / maxpos
+	return max_score, score_p
+	
+def motif_score(m1,m2):
+	s1 = motif_similarity(m1, m2)
+	s2 = motif_similarity(m1, anti_motif(m2))
+	if s1 >= s2:
+		return s1
+	else:
+		return s2
 
 def read_memetxt(memetxt):
 	'''Opens text file output of meme and extracts the sites discovered by 
@@ -201,6 +288,7 @@ def pos_accuracy(mpos,jpos,mw,jw):
 	return fp, posdis, fl, overlap, overlap_p
 
 
+"""
 def global_motcompare(motif1,motif2,background): #background info needs to be a dictionary
 	'''Finds global similarity score between the meme motif and the jaspar 
 	motif by finding the best matching region between the two motifs and 
@@ -299,6 +387,7 @@ def local_motcompare(motif1, motif2):
 				bestfit = distances[i]
 				fitindex = i
 	return bestfit, bestfit/max_score
+"""
 	
 def score_motifbit(motif):
 	'''Finds the informational content of the motif by summing up the information content of each individual position  '''
@@ -414,7 +503,7 @@ def performance_bg(motif,motifs,background):
 	scores = []
 	for i in range(len(motifs)):
 		memepwm = motifs[i]
-		score = global_motcompare(motif,memepwm,background)
+		score = motif_score(motif,memepwm)
 		scores.append(score)
 	return scores
 	
@@ -428,10 +517,11 @@ def performance_mo(motif,motifs):
 		scores.append(score)
 	return scores
 
+'''
 def get_memedata(promoter_file, meme_info, j_info, distance_scores, motif_info\
 ,jpwm,p,n,m,o,iteration):
-	'''Assembles data extracted from the meme output into a single array that
-	 can be displayed or further analyzed '''
+	#Assembles data extracted from the meme output into a single array that
+	 #can be displayed or further analyzed
 	result = []
 	fp = 0
 	fn = []
@@ -466,10 +556,11 @@ def get_memedata(promoter_file, meme_info, j_info, distance_scores, motif_info\
 	return result,fn
 
 
+
 #need to fix false negs everything 
 def find_falsenegs(fn,j_info,p,n,m,o,promoter_file,jpwm,iteration):
-	'''Determines which promoters with embedded motifs from the fasta files
-	were not detected by meme. '''
+	Determines which promoters with embedded motifs from the fasta files
+	were not detected by meme. 
 	#print('j_info',j_info)
 	#print('fn',fn)
 	false_negs = []
@@ -488,8 +579,8 @@ def find_falsenegs(fn,j_info,p,n,m,o,promoter_file,jpwm,iteration):
 
 def find_condensedstats(result,fn,motif_info,j_info,promoter_file,bits,p_bits,\
 p,n,m,o,false_neg,numjsites,iteration):
-	'''Creates condensed meme results focused on the performance of each motif
-	 found in meme '''
+	Creates condensed meme results focused on the performance of each motif
+	 found in meme 
 	condensed_stats = []
 	for i in range(len(motif_info)):
 		fl_ct = 0
@@ -511,8 +602,8 @@ p,n,m,o,false_neg,numjsites,iteration):
 #make sure this is good, make uncondensed have file name
 def present_info(promoter_file,results, bits,p_bits,scores,fn,\
 	j_info,motif_info,p,n,m,o,condenseddata):
-	'''Determines what presentation of data should look like based on the input 
-	parameters '''
+	Determines what presentation of data should look like based on the input 
+	parameters 
 	present = []
 	false_neg = find_falsenegs(fn, j_info,p,n,m,o,promoter_file)
 	if condenseddata:
@@ -528,8 +619,8 @@ def present_info(promoter_file,results, bits,p_bits,scores,fn,\
 
 
 def avg_condensedstats(final,motif_info,p,n,m,o,r):
-	'''Averages performance of condensed motif information for a more accurate
-	 understanding of motif performance '''
+	Averages performance of condensed motif information for a more accurate
+	 understanding of motif performance 
 	output = []
 	if len(final) > 1:
 		for i in range(len(motif_info)):
@@ -569,3 +660,4 @@ def avg_condensedstats(final,motif_info,p,n,m,o,r):
 			for j in range(len(final[i])):
 				output.append(final[i][j])
 		return output
+'''
