@@ -1,0 +1,880 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.1" />
+<title>motif API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>motif</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import random
+import math
+import os
+import statistics
+
+NT = [&#39;A&#39;, &#39;C&#39;, &#39;G&#39;, &#39;T&#39;]
+
+IUPAC = {
+        &#39;A&#39;: {&#39;A&#39;:1, &#39;C&#39;:0, &#39;G&#39;:0, &#39;T&#39;:0},
+        &#39;C&#39;: {&#39;A&#39;:0, &#39;C&#39;:1, &#39;G&#39;:0, &#39;T&#39;:0},
+        &#39;G&#39;: {&#39;A&#39;:0, &#39;C&#39;:0, &#39;G&#39;:1, &#39;T&#39;:0},
+        &#39;T&#39;: {&#39;A&#39;:0, &#39;C&#39;:0, &#39;G&#39;:0, &#39;T&#39;:1},
+        &#39;R&#39;: {&#39;A&#39;:0.5, &#39;C&#39;:0.0, &#39;G&#39;:0.5, &#39;T&#39;:0.0},
+        &#39;Y&#39;: {&#39;A&#39;:0.0, &#39;C&#39;:0.5, &#39;G&#39;:0.0, &#39;T&#39;:0.5},
+        &#39;M&#39;: {&#39;A&#39;:0.5, &#39;C&#39;:0.5, &#39;G&#39;:0.0, &#39;T&#39;:0.0},
+        &#39;K&#39;: {&#39;A&#39;:0.0, &#39;C&#39;:0.0, &#39;G&#39;:0.5, &#39;T&#39;:0.5},
+        &#39;W&#39;: {&#39;A&#39;:0.5, &#39;C&#39;:0.0, &#39;G&#39;:0.0, &#39;T&#39;:0.5},
+        &#39;S&#39;: {&#39;A&#39;:0.0, &#39;C&#39;:0.5, &#39;G&#39;:0.5, &#39;T&#39;:0.0},
+        &#39;B&#39;: {&#39;A&#39;:0.01, &#39;C&#39;:0.33, &#39;G&#39;:0.33, &#39;T&#39;:0.33},
+        &#39;D&#39;: {&#39;A&#39;:0.33, &#39;C&#39;:0.01, &#39;G&#39;:0.33, &#39;T&#39;:0.33},
+        &#39;H&#39;: {&#39;A&#39;:0.33, &#39;C&#39;:0.33, &#39;G&#39;:0.01, &#39;T&#39;:0.33},
+        &#39;V&#39;: {&#39;A&#39;:0.33, &#39;C&#39;:0.33, &#39;G&#39;:0.33, &#39;T&#39;:0.01},
+        &#39;N&#39;: {&#39;A&#39;:0.25, &#39;C&#39;:0.25, &#39;G&#39;:0.25, &#39;T&#39;:0.25},
+}
+
+def manhattan(d1, d2):
+        &#39;&#39;&#39;Calculates the Manhattan distance between two nucleotide distribution 
+        frequencies each represented as a python list&#39;&#39;&#39;
+        d = 0
+        for nt in NT:
+                d += abs(d1[nt] - d2[nt])
+        return d
+
+def motif2seq(m):
+        &#39;&#39;&#39;Converts a position weight matrix (represented as an array of 
+        dictionaries) into concensus sequence &#39;&#39;&#39;
+        seq = []
+        for i in range(len(m)):
+                min = 1e9
+                best = None
+                for s in IUPAC:
+                        d = manhattan(m[i], IUPAC[s])
+                        if d &lt; min:
+                                min = d
+                                best = s
+                seq.append(best)
+        return &#39;&#39;.join(seq)
+        
+def anti_motif(m):
+        &#39;&#39;&#39;Returns the reverse complement of a motif formatted as a position weight
+         matrix&#39;&#39;&#39;
+        a = []
+        for i in range(len(m)):
+                d = {}
+                d[&#39;A&#39;] = m[i][&#39;T&#39;]
+                d[&#39;C&#39;] = m[i][&#39;G&#39;]
+                d[&#39;G&#39;] = m[i][&#39;C&#39;]
+                d[&#39;T&#39;] = m[i][&#39;A&#39;]
+                a.append(d)
+        reversed(a)
+        return a
+
+def motif_similarity(m1, m2):
+        &#39;&#39;&#39;Finds and scores all possible overlaps of two motifs (position weight
+        matrix format) using an adapted Manhattan distance score and returns the
+        highest score and its percentage of the maximum possible score  &#39;&#39;&#39;
+        m = []
+        maxpos = None
+        if len(m1) &lt;= len(m2):
+                maxpos = 2*len(m1)
+        else:
+                maxpos = 2*len(m2)
+        
+        for i in range(len(m1)):
+                m.append([])
+                for j in range(len(m2)): m[i].append([])
+        
+        # init first row and column
+        for i in range(len(m1)): m[i][0] = 2 - manhattan(m1[i], m2[0])
+        for j in range(len(m2)): m[0][j] = 2 - manhattan(m1[0], m2[j])
+
+        # compute diagonals and find best score
+        max_score = 0   
+        for i in range(1, len(m1)):
+                for j in range(1, len(m2)):
+                        m[i][j] = m[i-1][j-1] + 2 - manhattan(m1[i], m2[j])
+                        if m[i][j] &gt; max_score:
+                                max_score = m[i][j]
+        score_p = max_score / maxpos
+        return max_score, score_p
+        
+def motif_score(m1,m2):
+        &#39;&#39;&#39;Accepts two position weight matrices (motifs) and determines if they
+        are reverse complements before scoring and returning the highest score
+        between the two &#39;&#39;&#39;
+        s1 = motif_similarity(m1, m2)
+        s2 = motif_similarity(m1, anti_motif(m2))
+        if s1 &gt;= s2:
+                return s1
+        else:
+                return s2
+
+def read_memetxt(memetxt):
+        &#39;&#39;&#39;Opens text file output of meme and extracts the sites discovered by 
+        meme&#39;&#39;&#39;
+        sites = []
+        motif_stats = []
+        with open(memetxt) as mt:
+                while True:
+                        line = mt.readline()
+                        if line == &#39;&#39;: break
+                        if line.startswith(&#39;MOTIF&#39;):
+                                l = line.split()
+                                motifid = l[2]
+                                nsites = l[8]
+                                #skip to sequence information
+                                while True:
+                                        line = mt.readline()
+                                        if line.startswith(&#39;Sequence name&#39;):
+                                                line = mt.readline()
+                                                break
+                                #parse through sequence information
+                                while True:
+                                        line = mt.readline()
+                                        if line.startswith(&#39;---&#39;): break
+                                        l = line.split()
+                                        seq = l[0]
+                                        if l[1] == &#39;+&#39; or l[1] == &#39;-&#39;:
+                                                strand = l[1]
+                                                beg = int(l[2])
+                                                pval = float(l[3])      
+                                        else:
+                                                strand = &#39;+&#39;
+                                                beg = int(l[1])
+                                                pval = float(l[2])
+                                        sites.append((motifid,nsites,strand,seq,beg,pval))
+                                #could potentially read out info about the motifs
+                                while True:
+                                        line = mt.readline()
+                                        if line.startswith(&#39;letter-probability matrix&#39;):
+                                                l = line.split()
+                                                wid = int(l[5])
+                                                e_val = float(l[9])
+                                                break                                           
+                return sites                            
+                                
+
+
+def memepwm(memeouttxt): #&#39;meme_out/meme.txt&#39;
+        &#39;&#39;&#39;Opens text file output of meme and extracts the position weight matrix
+         and it&#39;s corresponding information for every motif discovered by meme&#39;&#39;&#39;
+        motifs = []
+        motif_stats = []
+        nummot = 1
+        nt = [&#39;A&#39;,&#39;C&#39;,&#39;G&#39;,&#39;T&#39;]
+        with open(memeouttxt) as mt:
+                #iterates through the whole file
+                while True:
+                        line = mt.readline()
+                        if line == &#39;&#39;: break
+                        #finds the beginning of the pwms
+                        while True:
+                                if line == &#39;&#39;: break
+                                line = mt.readline()
+                                if line.startswith(&#39;letter-probability matrix&#39;):
+                                        m = []
+                                        l = line.split()
+                                        wid = int(l[5])
+                                        nsites = int(l[7])
+                                        e_val = float(l[9])
+                                        for i in range(wid):
+                                                m.append({})
+                                                #iterates through the pwms
+                                        for i in range(len(m)):
+                                                line = mt.readline()
+                                                l = line.split()
+                                                for n in range(len(nt)):
+                                                        m[i][nt[n]] = float(l[n])
+                                        motifs.append(m)
+                                        bits,p_bits = score_motifbit(m) 
+                                        motif_stats.append((f&#39;MEME-{nummot}&#39;,wid,nsites,e_val,bits\
+                                        ,p_bits))       
+                                        nummot += 1
+        return motifs, motif_stats
+
+#are variable names too specific?
+def read_testmotif(motif_file):
+        &#39;&#39;&#39;Opens the fasta file generated  &#39;&#39;&#39;
+        jpositions = []
+        numjsites = 0
+        with open(motif_file) as tm:
+                for line in tm.readlines():
+                        if line.startswith(&#39;&gt;&#39;):
+                                positions = [] 
+                                line = line.split()
+                                numjsites += (int((len(line[1:(len(line))]))/2))
+                                seq  = line[0].strip(&#39;&gt;&#39;)
+                                for i in range(1,len(line)):
+                                        if i == 1: 
+                                                if line[1] == &#39;[]&#39;:
+                                                        line[1] = line[1].strip(&#34;]&#34;)
+                                                positions.append(line[1].strip(&#34;[&#39;&#34;))
+                                        elif i == len(line)-1:
+                                                positions.append(line[i].strip(&#34;]&#39;&#34;))
+                                        else:
+                                                positions.append(line[i].strip(&#34;&#39;,&#34;))
+                                jpositions.append((seq,positions))
+        return jpositions, numjsites
+
+        
+
+
+def read_JASPAR(jasparfile):
+        &#39;&#39;&#39;Opens a jaspar file containing the binding motif of interest and creates 
+        a position weight matrix representing the binding motif&#39;&#39;&#39;
+        motif = []
+        linenum = 0
+        nt = [&#39;A&#39;, &#39;C&#39;, &#39;G&#39;, &#39;T&#39;]
+        with open(jasparfile) as jf:
+                for line in jf.readlines():
+                        if line.startswith(&#39;&gt;&#39;): continue
+                        line = line.split()     
+                        for i in range(2,len(line)-1):
+                                if len(motif) &lt; (len(line)-3): motif.append({})
+                                motif[i-2][nt[linenum]] = int(line[i])
+                        linenum+= 1 
+        for i in range(len(motif)):
+                total = 0 
+                for nt in motif[i]: total += motif[i][nt]
+                for nt in motif[i]: motif[i][nt] /= total
+        return motif 
+
+def generate_site(motif):
+        &#39;&#39;&#39;Generates a single DNA sequence from the position weight matrix &#39;&#39;&#39;
+        motifseq = []
+        total = 0
+        for i in range(0,len(motif)):
+                pA = motif[i][&#39;A&#39;]
+                pC = motif[i][&#39;C&#39;]
+                pG = motif[i][&#39;G&#39;]
+                pT = motif[i][&#39;T&#39;]
+                r = random.random()
+                if r &lt; pA:               motifseq += &#39;A&#39;
+                elif r &lt; (pA + pC):      motifseq += &#39;C&#39;
+                elif r &lt; (pA + pC + pG): motifseq += &#39;G&#39; 
+                else:                    motifseq += &#39;T&#39;
+        return motifseq
+        
+
+        
+#meme.txt files do not find false negatives 
+
+def pos_accuracy(mpos,jpos,mw,jw):
+        &#39;&#39;&#39;Accepts and compares the starting positions of the meme motifs and the
+         embedded jaspar motifs to determine how far apart they are and how much
+          overlap there is   &#39;&#39;&#39;
+        fp = 0
+        fl = 0
+        posdis = 0
+        if jpos == &#39;&#39;:
+                fp += 1
+                fl += 1
+                posdis = 100
+                overlap = 0
+                overlap_p = 0
+        elif jpos != &#39;&#39;:
+                mpos = int(mpos)
+                jpos = int(jpos)
+                mend = mpos + mw
+                jend = jpos + jw
+                if mpos &gt;= jpos and mpos &lt;= jend:
+                        posdis = mpos-jpos
+                        if mend &gt;= jend:
+                                overlap = jend - mpos
+                        else:
+                                overlap = mend - mpos
+                        overlap_p = overlap/jw
+                        if overlap_p &lt; 0.2:
+                                fp += 1
+                                fl += 1         
+                elif mpos &lt;= jpos and jpos &lt;= mend:
+                        posdis = jpos-mpos
+                        if mend &lt;= jend:
+                                overlap = mend - jpos
+                        else:
+                                overlap = jend - jpos
+                        overlap_p = overlap/jw
+                        if overlap_p &lt; 0.2:
+                                fp += 1
+                                fl += 1
+                else:
+                        fl += 1 
+                        posdis = 98
+                        overlap = 0
+                        overlap_p = 0
+        return fp, posdis, fl, overlap, overlap_p
+
+
+
+        
+def score_motifbit(motif):
+        &#39;&#39;&#39;Finds the informational content of the motif by summing up the 
+        information content of each individual position  &#39;&#39;&#39;
+        score = 0
+        max_score = 2*len(motif)
+        for i in range(len(motif)):
+                entropy = 0
+                pseudos = 0
+                for nt in motif[i]:
+                        prob = motif[i][nt]
+                        if prob == 0:
+                                continue
+                        entropy -= prob* math.log2(prob)
+                bits = 2 - entropy - pseudos*.1
+                score += bits
+        if max_score &gt; 0:
+                p = score/max_score
+        else:
+                p = &#39;&#39;
+        return score, p
+
+
+def run_meme(memepath,promoterfile,m,o,nummotifs,maxw,minw):
+        &#39;&#39;&#39;Will compile selected meme parameters into a command to run downloaded
+        MEME software, and then will extract important information from meme output
+        file. &#39;&#39;&#39;
+        meme = f&#39;{memepath} {promoterfile} -dna -markov_order {o} -mod {m}\
+        -nmotifs {nummotifs} -maxw {maxw} -minw {minw} -revcomp 2&gt;/dev/null&#39;
+        os.system(meme)
+        meme_info = read_memetxt(&#39;meme_out/meme.txt&#39;)
+        motifs, motif_info = memepwm(&#39;meme_out/meme.txt&#39;)
+        return motifs, meme_info, motif_info
+        
+
+
+
+def performance_bg(motif,motifs):
+        &#39;&#39;&#39;Finds global similarity score between the given motif and the motif
+        found by meme &#39;&#39;&#39;
+        scores = []
+        for i in range(len(motifs)):
+                memepwm = motifs[i]
+                score = motif_score(motif,memepwm)
+                scores.append(score)
+        return scores
+        </code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="motif.anti_motif"><code class="name flex">
+<span>def <span class="ident">anti_motif</span></span>(<span>m)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns the reverse complement of a motif formatted as a position weight
+matrix</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def anti_motif(m):
+        &#39;&#39;&#39;Returns the reverse complement of a motif formatted as a position weight
+         matrix&#39;&#39;&#39;
+        a = []
+        for i in range(len(m)):
+                d = {}
+                d[&#39;A&#39;] = m[i][&#39;T&#39;]
+                d[&#39;C&#39;] = m[i][&#39;G&#39;]
+                d[&#39;G&#39;] = m[i][&#39;C&#39;]
+                d[&#39;T&#39;] = m[i][&#39;A&#39;]
+                a.append(d)
+        reversed(a)
+        return a</code></pre>
+</details>
+</dd>
+<dt id="motif.generate_site"><code class="name flex">
+<span>def <span class="ident">generate_site</span></span>(<span>motif)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generates a single DNA sequence from the position weight matrix</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def generate_site(motif):
+        &#39;&#39;&#39;Generates a single DNA sequence from the position weight matrix &#39;&#39;&#39;
+        motifseq = []
+        total = 0
+        for i in range(0,len(motif)):
+                pA = motif[i][&#39;A&#39;]
+                pC = motif[i][&#39;C&#39;]
+                pG = motif[i][&#39;G&#39;]
+                pT = motif[i][&#39;T&#39;]
+                r = random.random()
+                if r &lt; pA:               motifseq += &#39;A&#39;
+                elif r &lt; (pA + pC):      motifseq += &#39;C&#39;
+                elif r &lt; (pA + pC + pG): motifseq += &#39;G&#39; 
+                else:                    motifseq += &#39;T&#39;
+        return motifseq</code></pre>
+</details>
+</dd>
+<dt id="motif.manhattan"><code class="name flex">
+<span>def <span class="ident">manhattan</span></span>(<span>d1, d2)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculates the Manhattan distance between two nucleotide distribution
+frequencies each represented as a python list</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def manhattan(d1, d2):
+        &#39;&#39;&#39;Calculates the Manhattan distance between two nucleotide distribution 
+        frequencies each represented as a python list&#39;&#39;&#39;
+        d = 0
+        for nt in NT:
+                d += abs(d1[nt] - d2[nt])
+        return d</code></pre>
+</details>
+</dd>
+<dt id="motif.memepwm"><code class="name flex">
+<span>def <span class="ident">memepwm</span></span>(<span>memeouttxt)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Opens text file output of meme and extracts the position weight matrix
+and it's corresponding information for every motif discovered by meme</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def memepwm(memeouttxt): #&#39;meme_out/meme.txt&#39;
+        &#39;&#39;&#39;Opens text file output of meme and extracts the position weight matrix
+         and it&#39;s corresponding information for every motif discovered by meme&#39;&#39;&#39;
+        motifs = []
+        motif_stats = []
+        nummot = 1
+        nt = [&#39;A&#39;,&#39;C&#39;,&#39;G&#39;,&#39;T&#39;]
+        with open(memeouttxt) as mt:
+                #iterates through the whole file
+                while True:
+                        line = mt.readline()
+                        if line == &#39;&#39;: break
+                        #finds the beginning of the pwms
+                        while True:
+                                if line == &#39;&#39;: break
+                                line = mt.readline()
+                                if line.startswith(&#39;letter-probability matrix&#39;):
+                                        m = []
+                                        l = line.split()
+                                        wid = int(l[5])
+                                        nsites = int(l[7])
+                                        e_val = float(l[9])
+                                        for i in range(wid):
+                                                m.append({})
+                                                #iterates through the pwms
+                                        for i in range(len(m)):
+                                                line = mt.readline()
+                                                l = line.split()
+                                                for n in range(len(nt)):
+                                                        m[i][nt[n]] = float(l[n])
+                                        motifs.append(m)
+                                        bits,p_bits = score_motifbit(m) 
+                                        motif_stats.append((f&#39;MEME-{nummot}&#39;,wid,nsites,e_val,bits\
+                                        ,p_bits))       
+                                        nummot += 1
+        return motifs, motif_stats</code></pre>
+</details>
+</dd>
+<dt id="motif.motif2seq"><code class="name flex">
+<span>def <span class="ident">motif2seq</span></span>(<span>m)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Converts a position weight matrix (represented as an array of
+dictionaries) into concensus sequence</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def motif2seq(m):
+        &#39;&#39;&#39;Converts a position weight matrix (represented as an array of 
+        dictionaries) into concensus sequence &#39;&#39;&#39;
+        seq = []
+        for i in range(len(m)):
+                min = 1e9
+                best = None
+                for s in IUPAC:
+                        d = manhattan(m[i], IUPAC[s])
+                        if d &lt; min:
+                                min = d
+                                best = s
+                seq.append(best)
+        return &#39;&#39;.join(seq)</code></pre>
+</details>
+</dd>
+<dt id="motif.motif_score"><code class="name flex">
+<span>def <span class="ident">motif_score</span></span>(<span>m1, m2)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Accepts two position weight matrices (motifs) and determines if they
+are reverse complements before scoring and returning the highest score
+between the two</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def motif_score(m1,m2):
+        &#39;&#39;&#39;Accepts two position weight matrices (motifs) and determines if they
+        are reverse complements before scoring and returning the highest score
+        between the two &#39;&#39;&#39;
+        s1 = motif_similarity(m1, m2)
+        s2 = motif_similarity(m1, anti_motif(m2))
+        if s1 &gt;= s2:
+                return s1
+        else:
+                return s2</code></pre>
+</details>
+</dd>
+<dt id="motif.motif_similarity"><code class="name flex">
+<span>def <span class="ident">motif_similarity</span></span>(<span>m1, m2)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Finds and scores all possible overlaps of two motifs (position weight
+matrix format) using an adapted Manhattan distance score and returns the
+highest score and its percentage of the maximum possible score</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def motif_similarity(m1, m2):
+        &#39;&#39;&#39;Finds and scores all possible overlaps of two motifs (position weight
+        matrix format) using an adapted Manhattan distance score and returns the
+        highest score and its percentage of the maximum possible score  &#39;&#39;&#39;
+        m = []
+        maxpos = None
+        if len(m1) &lt;= len(m2):
+                maxpos = 2*len(m1)
+        else:
+                maxpos = 2*len(m2)
+        
+        for i in range(len(m1)):
+                m.append([])
+                for j in range(len(m2)): m[i].append([])
+        
+        # init first row and column
+        for i in range(len(m1)): m[i][0] = 2 - manhattan(m1[i], m2[0])
+        for j in range(len(m2)): m[0][j] = 2 - manhattan(m1[0], m2[j])
+
+        # compute diagonals and find best score
+        max_score = 0   
+        for i in range(1, len(m1)):
+                for j in range(1, len(m2)):
+                        m[i][j] = m[i-1][j-1] + 2 - manhattan(m1[i], m2[j])
+                        if m[i][j] &gt; max_score:
+                                max_score = m[i][j]
+        score_p = max_score / maxpos
+        return max_score, score_p</code></pre>
+</details>
+</dd>
+<dt id="motif.performance_bg"><code class="name flex">
+<span>def <span class="ident">performance_bg</span></span>(<span>motif, motifs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Finds global similarity score between the given motif and the motif
+found by meme</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def performance_bg(motif,motifs):
+        &#39;&#39;&#39;Finds global similarity score between the given motif and the motif
+        found by meme &#39;&#39;&#39;
+        scores = []
+        for i in range(len(motifs)):
+                memepwm = motifs[i]
+                score = motif_score(motif,memepwm)
+                scores.append(score)
+        return scores</code></pre>
+</details>
+</dd>
+<dt id="motif.pos_accuracy"><code class="name flex">
+<span>def <span class="ident">pos_accuracy</span></span>(<span>mpos, jpos, mw, jw)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Accepts and compares the starting positions of the meme motifs and the
+embedded jaspar motifs to determine how far apart they are and how much
+overlap there is</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def pos_accuracy(mpos,jpos,mw,jw):
+        &#39;&#39;&#39;Accepts and compares the starting positions of the meme motifs and the
+         embedded jaspar motifs to determine how far apart they are and how much
+          overlap there is   &#39;&#39;&#39;
+        fp = 0
+        fl = 0
+        posdis = 0
+        if jpos == &#39;&#39;:
+                fp += 1
+                fl += 1
+                posdis = 100
+                overlap = 0
+                overlap_p = 0
+        elif jpos != &#39;&#39;:
+                mpos = int(mpos)
+                jpos = int(jpos)
+                mend = mpos + mw
+                jend = jpos + jw
+                if mpos &gt;= jpos and mpos &lt;= jend:
+                        posdis = mpos-jpos
+                        if mend &gt;= jend:
+                                overlap = jend - mpos
+                        else:
+                                overlap = mend - mpos
+                        overlap_p = overlap/jw
+                        if overlap_p &lt; 0.2:
+                                fp += 1
+                                fl += 1         
+                elif mpos &lt;= jpos and jpos &lt;= mend:
+                        posdis = jpos-mpos
+                        if mend &lt;= jend:
+                                overlap = mend - jpos
+                        else:
+                                overlap = jend - jpos
+                        overlap_p = overlap/jw
+                        if overlap_p &lt; 0.2:
+                                fp += 1
+                                fl += 1
+                else:
+                        fl += 1 
+                        posdis = 98
+                        overlap = 0
+                        overlap_p = 0
+        return fp, posdis, fl, overlap, overlap_p</code></pre>
+</details>
+</dd>
+<dt id="motif.read_JASPAR"><code class="name flex">
+<span>def <span class="ident">read_JASPAR</span></span>(<span>jasparfile)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Opens a jaspar file containing the binding motif of interest and creates
+a position weight matrix representing the binding motif</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def read_JASPAR(jasparfile):
+        &#39;&#39;&#39;Opens a jaspar file containing the binding motif of interest and creates 
+        a position weight matrix representing the binding motif&#39;&#39;&#39;
+        motif = []
+        linenum = 0
+        nt = [&#39;A&#39;, &#39;C&#39;, &#39;G&#39;, &#39;T&#39;]
+        with open(jasparfile) as jf:
+                for line in jf.readlines():
+                        if line.startswith(&#39;&gt;&#39;): continue
+                        line = line.split()     
+                        for i in range(2,len(line)-1):
+                                if len(motif) &lt; (len(line)-3): motif.append({})
+                                motif[i-2][nt[linenum]] = int(line[i])
+                        linenum+= 1 
+        for i in range(len(motif)):
+                total = 0 
+                for nt in motif[i]: total += motif[i][nt]
+                for nt in motif[i]: motif[i][nt] /= total
+        return motif </code></pre>
+</details>
+</dd>
+<dt id="motif.read_memetxt"><code class="name flex">
+<span>def <span class="ident">read_memetxt</span></span>(<span>memetxt)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Opens text file output of meme and extracts the sites discovered by
+meme</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def read_memetxt(memetxt):
+        &#39;&#39;&#39;Opens text file output of meme and extracts the sites discovered by 
+        meme&#39;&#39;&#39;
+        sites = []
+        motif_stats = []
+        with open(memetxt) as mt:
+                while True:
+                        line = mt.readline()
+                        if line == &#39;&#39;: break
+                        if line.startswith(&#39;MOTIF&#39;):
+                                l = line.split()
+                                motifid = l[2]
+                                nsites = l[8]
+                                #skip to sequence information
+                                while True:
+                                        line = mt.readline()
+                                        if line.startswith(&#39;Sequence name&#39;):
+                                                line = mt.readline()
+                                                break
+                                #parse through sequence information
+                                while True:
+                                        line = mt.readline()
+                                        if line.startswith(&#39;---&#39;): break
+                                        l = line.split()
+                                        seq = l[0]
+                                        if l[1] == &#39;+&#39; or l[1] == &#39;-&#39;:
+                                                strand = l[1]
+                                                beg = int(l[2])
+                                                pval = float(l[3])      
+                                        else:
+                                                strand = &#39;+&#39;
+                                                beg = int(l[1])
+                                                pval = float(l[2])
+                                        sites.append((motifid,nsites,strand,seq,beg,pval))
+                                #could potentially read out info about the motifs
+                                while True:
+                                        line = mt.readline()
+                                        if line.startswith(&#39;letter-probability matrix&#39;):
+                                                l = line.split()
+                                                wid = int(l[5])
+                                                e_val = float(l[9])
+                                                break                                           
+                return sites                            </code></pre>
+</details>
+</dd>
+<dt id="motif.read_testmotif"><code class="name flex">
+<span>def <span class="ident">read_testmotif</span></span>(<span>motif_file)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Opens the fasta file generated</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def read_testmotif(motif_file):
+        &#39;&#39;&#39;Opens the fasta file generated  &#39;&#39;&#39;
+        jpositions = []
+        numjsites = 0
+        with open(motif_file) as tm:
+                for line in tm.readlines():
+                        if line.startswith(&#39;&gt;&#39;):
+                                positions = [] 
+                                line = line.split()
+                                numjsites += (int((len(line[1:(len(line))]))/2))
+                                seq  = line[0].strip(&#39;&gt;&#39;)
+                                for i in range(1,len(line)):
+                                        if i == 1: 
+                                                if line[1] == &#39;[]&#39;:
+                                                        line[1] = line[1].strip(&#34;]&#34;)
+                                                positions.append(line[1].strip(&#34;[&#39;&#34;))
+                                        elif i == len(line)-1:
+                                                positions.append(line[i].strip(&#34;]&#39;&#34;))
+                                        else:
+                                                positions.append(line[i].strip(&#34;&#39;,&#34;))
+                                jpositions.append((seq,positions))
+        return jpositions, numjsites</code></pre>
+</details>
+</dd>
+<dt id="motif.run_meme"><code class="name flex">
+<span>def <span class="ident">run_meme</span></span>(<span>memepath, promoterfile, m, o, nummotifs, maxw, minw)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Will compile selected meme parameters into a command to run downloaded
+MEME software, and then will extract important information from meme output
+file.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run_meme(memepath,promoterfile,m,o,nummotifs,maxw,minw):
+        &#39;&#39;&#39;Will compile selected meme parameters into a command to run downloaded
+        MEME software, and then will extract important information from meme output
+        file. &#39;&#39;&#39;
+        meme = f&#39;{memepath} {promoterfile} -dna -markov_order {o} -mod {m}\
+        -nmotifs {nummotifs} -maxw {maxw} -minw {minw} -revcomp 2&gt;/dev/null&#39;
+        os.system(meme)
+        meme_info = read_memetxt(&#39;meme_out/meme.txt&#39;)
+        motifs, motif_info = memepwm(&#39;meme_out/meme.txt&#39;)
+        return motifs, meme_info, motif_info</code></pre>
+</details>
+</dd>
+<dt id="motif.score_motifbit"><code class="name flex">
+<span>def <span class="ident">score_motifbit</span></span>(<span>motif)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Finds the informational content of the motif by summing up the
+information content of each individual position</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def score_motifbit(motif):
+        &#39;&#39;&#39;Finds the informational content of the motif by summing up the 
+        information content of each individual position  &#39;&#39;&#39;
+        score = 0
+        max_score = 2*len(motif)
+        for i in range(len(motif)):
+                entropy = 0
+                pseudos = 0
+                for nt in motif[i]:
+                        prob = motif[i][nt]
+                        if prob == 0:
+                                continue
+                        entropy -= prob* math.log2(prob)
+                bits = 2 - entropy - pseudos*.1
+                score += bits
+        if max_score &gt; 0:
+                p = score/max_score
+        else:
+                p = &#39;&#39;
+        return score, p</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="two-column">
+<li><code><a title="motif.anti_motif" href="#motif.anti_motif">anti_motif</a></code></li>
+<li><code><a title="motif.generate_site" href="#motif.generate_site">generate_site</a></code></li>
+<li><code><a title="motif.manhattan" href="#motif.manhattan">manhattan</a></code></li>
+<li><code><a title="motif.memepwm" href="#motif.memepwm">memepwm</a></code></li>
+<li><code><a title="motif.motif2seq" href="#motif.motif2seq">motif2seq</a></code></li>
+<li><code><a title="motif.motif_score" href="#motif.motif_score">motif_score</a></code></li>
+<li><code><a title="motif.motif_similarity" href="#motif.motif_similarity">motif_similarity</a></code></li>
+<li><code><a title="motif.performance_bg" href="#motif.performance_bg">performance_bg</a></code></li>
+<li><code><a title="motif.pos_accuracy" href="#motif.pos_accuracy">pos_accuracy</a></code></li>
+<li><code><a title="motif.read_JASPAR" href="#motif.read_JASPAR">read_JASPAR</a></code></li>
+<li><code><a title="motif.read_memetxt" href="#motif.read_memetxt">read_memetxt</a></code></li>
+<li><code><a title="motif.read_testmotif" href="#motif.read_testmotif">read_testmotif</a></code></li>
+<li><code><a title="motif.run_meme" href="#motif.run_meme">run_meme</a></code></li>
+<li><code><a title="motif.score_motifbit" href="#motif.score_motifbit">score_motifbit</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+</footer>
+</body>
+</html>
