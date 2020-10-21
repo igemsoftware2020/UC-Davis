@@ -55,15 +55,15 @@ while True:
 		# run meme
 		motifs, mi, moi = motif.run_meme('meme',fasta,'zoops',0,1,13,13)
 		pwm2 = motifs[0]
-		print(pwm2)
+		#print(pwm2)
 		#pwm2 = motif.run_meme(...)
 	
 		# compare meme output to the whole set
-		s = motif.global_motcompare(pwm1,pwm2,{'A':0.25,'C':0.25,'G':0.25,'T':0.25})
+		s = motif.motif_score(pwm1,pwm2)
 		scores.append(s[0])
 		#print(size,i,score,sep=',')
 		#if motif.distance(pwm1, pwm2) < threshold:...
-	print(size,statistics.mean(scores))
+	print(size,statistics.mean(scores),sep=',')
 
 
 """
