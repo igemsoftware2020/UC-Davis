@@ -99,9 +99,13 @@ if arg.jasparfile:
 	
 assert(len(motifs)==len(motif_info))
 for i in range(len(motifs)):
+	
 	print('NAME:',motif_info[i][0],'WIDTH:',motif_info[i][1],'NUMBER OF SITES:', motif_info[i][2]\
 	, 'E VALUE:', motif_info[i][3], 'INFO IN BITS:', motif_info[i][4], 'BIT PERCENTAGE:', motif_info[i][5])
+	
 	pwm = motifs[i]
+	consensus = sm.motif2seq(pwm)
+	print('CONSENSUS:',consensus)
 	if arg.jasparfile:
 		print('')
 		print('similarity score:', *scores[i])
