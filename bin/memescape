@@ -290,7 +290,7 @@ for p in promoter:
 				if arg.dnafile:
 					promoter_file = generate_promoter_mo(arg.dnafile, \
 					arg.jasparfile, p, n, o, freq,r+1)
-					background = sm.calcbg_frompromfile(promoter_file)
+					#background = sm.calcbg_frompromfile(promoter_file)
 				else:
 					promoter_file = generate_promoter_bg\
 					(arg.jasparfile,p,n,freq,background,r+1)
@@ -299,7 +299,7 @@ for p in promoter:
 				j_info, numjsites = sm.read_testmotif(promoter_file)
 				motifs, meme_info, motif_info = sm.run_meme\
 				(arg.memepath,promoter_file,m,o,arg.nummotifs,maxw,minw)
-				scores = sm.performance_bg(jpwm,motifs,background)
+				scores = sm.performance_bg(jpwm,motifs)
 				results, fn = get_memedata(promoter_file,meme_info,j_info,scores,motif_info,jpwm,p,n,m,o,iterations)
 				false_neg = find_falsenegs(fn, j_info,p,n,\
 				m,o,promoter_file,jpwm,iterations)
