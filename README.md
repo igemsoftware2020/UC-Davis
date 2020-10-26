@@ -10,10 +10,12 @@
 ## Manifest
 
 + README.md
-+ TUTORIAL.md - instructions for using programs in bin
++ TUTORIAL.md - instructions for using programs in bin and additional installation and package information
 + bin - programs: memescape, mbed, motifomatic
 + data - test data 
 + motif.html - API documentation for sporecore.motif 
 + setup.py
 + sporecore - motif.py and unit testing scripts
++ promoters.tar.gz - tarball containing promoter FASTA files for every *Aspergillus* cluster in JGI
++ 
 
