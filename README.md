@@ -17,5 +17,5 @@
 + setup.py
 + sporecore - motif.py and unit testing scripts
 + promoters.tar.gz - tarball containing promoter FASTA files for every *Aspergillus* cluster in JGI
-+ 
++ sporecore_results - UC-Davis sporecore team research results (html and csv files)
 
