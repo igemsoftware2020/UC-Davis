@@ -2,6 +2,8 @@
 
 ## Install
 
+Go to TUTORIAL.md for more installation instructions
+
 + Must have MEME installed. This package has been tested with MEME 5.1.1
 + Must have Python > 3.6
 + Put all programs from bin in PATH
