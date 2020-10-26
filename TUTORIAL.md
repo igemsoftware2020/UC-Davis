@@ -25,21 +25,43 @@ This tutorial includes instructions for:
 5. Finding binding sites using motifomatic
 
 ## Disclaimers
-Before using this software, it is assumed that the user has the ability to 
-navigate directories and run programs from the command line.
-Additionally it is assumed that MEME suite version 5.1.1 is downloaded locally
- and has noted the path of the MEME motif finding software.
-To use this software it is assumed that the user understands the jaspar and 
-fasta file formats. 
+We make several assumptions about users of this software. If any of the 
+following expectations are not met, users may discover challenges with using
+ this software. 
 
-assumed basic info theory /understand of position weight matrices
-assumed understanding of markov order
- assumes understanding of meme suite motif finder (i.e. zoops, oops, anr)
++ It is assumed that the user is familiar with Unix/Linux, is comfortable 
+navigating directories and running software programs from the command line.
++ It is assumed that the user knows how to create environment variables and 
+edit their PATH and PYTHONPATH.
++ It is assumed that MEME suite version 5.1.1 is installed locally and can be 
+run as an environment variable (see MEME suite software page for further 
+information.
++ It is assumed that user possesses basic understanding of the MEME suite motif
+ finder MEME and its search models (i.e. zoops, oops, anr)
++ It is assumed that the user understands the jaspar and fasta file formats. 
++ It is assumed the user has basic understanding of position weight matrices 
+and Markov analysis. 
++ It is assumed that the user has installed Python>3.6
  
-### 1. Setting up
--------------- 
+ 
+### 1. Setting up:
 
- into a
+1. Before installing the UC Davis software package, it is important to first 
+install the MEME suite and to make sure that it is working locally. 
+2. Download the UC Davis repository and update `PATH` to include 
+`UC-Davis/bin`.
+3. Update `PYTHONPATH` to include `UC-Davis/sporecore` Navigate to the UC-Davis 
+directory and run the following command:
+`python3 setup.py test`
+	+ If all tests pass, you may proceed. 
+	+ If errors, contact lilymaryam5@gmail.com
+	
+4. After updating the `PATH` and `PYTHONPATH`, open a new terminal and check
+ that the programs in bin are working as environment variables.
+	+ Type a program name in the terminal. If UC-Davis/bin and
+	 UC-Davis/sporecore are  set up correctly, the command line prompts 
+	 for the program should appear.
+
  
 ### 2. Generating .fa files with mbed
 mbed is a python program that will create a FASTA formatted file of synthetic 
@@ -67,16 +89,18 @@ To run mbed, there is one required command line argument:
 	`--jasparfile`
 
 
-This argument has to be a string that specifies the file path to a jaspar file 
+This argument specifies the file path to a jaspar file 
 containing the position weight matrix of the binding motif to be embedded in 
 the promoters. For this program, the user must have jaspar files available or 
 format their intended position weight matrix in jaspar format. A testfile 
 'testjaspar.1.jaspar' is provided for testing mbed, as well as other 
-programs in the package.   
+relevant programs mentioned in this tutorial.
 
 To use the markov analysis function of mbed, the user must provide a fasta
-formatted file of background DNA sequence. The optional command line arguments
-for markov analysis in mbed are as follows.
+formatted file containingDNA sequence. The purpose of the markov analysis
+ option for mbed is to allow users to create promoters with higher complexity
+ sequence. The optional command line arguments for markov analysis in 
+mbed are as follows.
 
 + `--dnafile`: a string argument that specifies the file path to a fasta file 
 that contains genomic or promoter sequence from actual species 
@@ -84,32 +108,32 @@ that contains genomic or promoter sequence from actual species
 order to be used for analyzing the DNA sequence
 	+ note that if markov order specified exceeds complexity of given sequence, 
   an error will occur
+
+
   
 To initiate markov analysis, `--dnafile` must be input with a valid file in
-the command line. If `--dnafile` is used but the markov order is 0, mbed will
-generate a nucleotide distribution frequency from the file and generate 
-a simple promoter sequence.
+the command line. The default is a markov order of 0. User can specify higher 
+markov orders which are greater than 0.
 
 When `--dnafile` isn't input, the program will generate sequence using a 
 nucleotide distribution frequency that can be modified in the command line.
 
-The purpose of the markov analysis option for mbed is to allow users to create
-promoters with higher complexity sequence.
 
-mbed has several optional arguments with adjustable default settings that 
+mbed also has several optional arguments with adjustable default settings that 
 can modify the final fasta output file. 
 
 + `--numseq`: an integer argument (default 10) that specifies how many promoter
 sequences will be generated
 + `--seqlen`: an integer argument (default 100) that specifies how long each 
 promoter in the fasta output file will be 
-	+ note that sequence can't be shorter than the length of the binding motif
+	+ note that --seqlen can't be shorter than the length of the binding motif
 + `--mps`: an integer argument (default 1) that determines how many motif 
-sequences will be embedded in each promoter
-+ `--freq`: a float arguments (default 0.9) that specifies a target frequency
-for promoters having motifs embedded (i.e. if mps=1.0, all promoters will
-have a motif, if mps = 0.9 ~9/10 promoters will have a motif)
-	+ note that mps must be less than or equal to 1.0
+sequences will be embedded in per promoter
++ `--freq`: a float argument (default 0.9) that specifies a probability at 
+which motifs will be embedded in promoters (i.e. if --freq = 1.0, all promoters 
+will have a motif, if --freq = 0.9, on average 9/10 promoters will have a 
+motif)
+	+ note that --freq must be a number between 0 and 1.0
 + `--PA`, `--PC`, `--PG`, `--PT`: four separate float arguments (each default 
 0.25) that specify each nucleotide's frequency in the promoter background 
 sequence
@@ -128,23 +152,26 @@ To view these options and defaults again in command line, run the command:
 
 To test mbed it is recommended that the user try to create a fasta file with a
 specific set of parameters. In this example it is assumed that the user is 
-working in the UC-Davis directory and any paths are relative to that.
+working in the UC-Davis directory (which was downloaded from the GitHub 
+repository) and any paths are relative to that.
 
-If a user wanted to make 15 promoters 500 base pairs long and embed a binding 
-motif from testjaspar.1.jaspar (the test file mentioned above) they would need
-to first find the jaspar filepath ('data/testjaspar.1.jaspar'). They could 
-further specify that they wanted ~0.8 of the total promoters to have a single
- embedded motif with the A,C,G,T frequencies as 0.3, 0.2, 0.2, and 0.3 
- respectively. 
+###### Example
+If a user wanted to make 15 promoters that are each 500 base pairs long and 
+embed a binding motif from testjaspar.1.jaspar (the test file mentioned above)
+ they would need to first find the jaspar filepath 
+('data/testjaspar.1.jaspar'). They could further specify that they wanted ~0.8
+ of the total promoters to have a single embedded motif and that the background
+A,C,G,T frequencies of the promoter files should be  0.3, 0.2, 0.2, and 0.3 
+respectively. 
 
 For this scenario, the command would be: 
  
 `mbed --jasparfile data/testjaspar.1.jaspar --numseq 15 --seqlen 500 --mps 1
  --freq 0.8 --PA 0.3 --PC 0.2 --PG 0.2 --PT 0.3 `
  
-This command will print the fasta-formatted promoter sequences directly to the
-terminal. To create a file for future use, it is essential to select a 
-directory and file name to save your file to. 
+This command will print the promoter sequences directly to the
+Terminal in FASTA format. To create a file for future use, it is essential to 
+select a directory and file name to save your file to. 
 
 For example: '~/sporecorefiles/testpromoters123.fa'
 
@@ -158,26 +185,26 @@ To create this file, the command would be:
 
 To run the same scenario using markov analysis, the user would need a 
 background DNA sequence. As a testfile, the complete sequence of 
- *Saccharomyces cerevisiae S288C* Chromosome I was downloaded from GenBank as a
-fasta file. This testfile is called sequence.fasta and can be found via this 
-filepath: 'data/seqeunce.fasta'.
+ *Saccharomyces cerevisiae S288C* Chromosome I was downloaded from GenBank in
+ FASTA format. This testfile is called “sequence.fasta” and can be found via 
+ this filepath: 'data/sequence.fasta'.
 
-Next the user must decide which markov order they want to use to train mbed. For
-the provided testfile (found in the data directory) sequence.fasta, the maximum 
-order possible is 6. Selecting a higher number will result in an error message. 
-To increase markov order one must also increase sequence in the file. 
+Next the user must decide which markov order they want to use to train mbed. 
+For the provided testfile sequence.fasta, the maximum order possible is 6. 
+Selecting a higher number will result in an error message. To increase markov
+ order one must also increase the amount (length) of DNA sequence in the file. 
 
 It is again assumed that the user is working in the UC-Davis directory and any
-paths are relative to that. To effectively run this program, understanding 
-markov models is recommended, however, a user can run this option if they
-understand that higher complexity sequence will create more realistic 
-promoters. 
+paths are relative to that. To effectively run this program, a competent 
+understanding of Markov models is recommended, however, a user can run this 
+option if they simply know that higher complexity sequence will create more 
+realistic promoters. 
 
-Scenario:
+###### Scenario:
 If a user wanted to make 15 promoters 500 base pairs long and embed a binding
 motif from testjaspar.1.jaspar (the test file mentioned above) they would need
 the jaspar filepath: data/testjaspar.1.jaspar. They could further specify that 
-they wanted ~0.8 of the total promoters to have a single embedded motif.
+they wanted ~80% of the total promoters to have a single embedded motif.
 
 In this scenario they would like a more complex promoter sequence that more 
 closely imitates the sequence of real promoters. For this example they must 
@@ -215,7 +242,8 @@ identified biding sites can be used for further experimentation. Motif
 position and strand in a given promoter file is stored in the sequence name 
 like so:
 
-">seq-1 ['77 +']'"
+">seq-1 ['77 +']'" - indicating that the motif is at base pair position 77 on 
+the positive strand
 
 
 ### 3. Using memescape to explore meme capabilities 
@@ -225,26 +253,27 @@ intention of creating files to test the performance of the MEME suite
 software's motif-finder (called MEME) tool. By creating fasta 
 files with exact motif location, strand, and position weight matrix known,
  MEME's ability to correctly locate motifs in a promoter sequence can be 
-quantified. 
+quantified and optimal running parameters can be designed. 
 
-For this purpose, memescape was created. memescape is a wrapper program that 
-automates the creation of synthetic promoter files in mbed and the analysis 
-of these files in the motif finder tool of MEME.
+To execute this quantification and optimization, memescape was created. 
+memescape is a wrapper program that automates the creation of synthetic 
+promoter files (using mbed) and automates the analysis of those files by 
+running MEME on them.
 
 It is the intention of this program to run promoter files of various 
-specifications through meme with different motif-finding parameters in order to
+specifications through MEME with different motif-finding parameters in order to
 determine when meme performs best. For each iteration in memescape, a fasta 
-file with set parameters is created and run through the motif-finder for each 
-possible meme model (oops,zoops, anr). For each run of the motif-finder, 
-memescape parses and records the fasta promoter file name, the file 
-specifications for promoter number and size, the position and strand 
-of the embedded motif in each sequences, and the postion weight matrix of the
-embedded motif itself. 
+file with set parameters is created and run through MEME once with each model 
+(oops,zoops, anr). For each run, memescape parses and records the fasta 
+promoter file name, the file specifications for promoter number and size, the 
+position and strand of the embedded motif in each sequences, and the position 
+weight matrix of the embedded motif itself. 
 
-After the motif finder analyzes the file, memescape opens the meme output and
-extracts relevant information to compare to file information. After a variety 
-of possible analyses, memescape parses and prints all relevant performance data
-which can be saved to a .csv file for viewing. 
+After the MEME analyzes the file, memescape opens the MEME output and
+extracts relevant information to compare to compare the expected motif 
+information (from the initial FASTA file). After comparing and analysing the 
+extracted information, memescape parses and prints all relevant performance 
+data which can be saved to a .csv file for viewing. 
 
 Using memescape for performance analysis is highly recommended over running 
 meme manually multiple times for a single file because it allows for hundreds
@@ -254,9 +283,9 @@ unsupervised time frame.
 memescape has the ability to find optimal parameters for motif finding as well
 as the ability to definitively determine which scenarios will never 
 successfully reveal binding motifs. In this way scientists can discover how 
-many and how long of promoters are needed and can attempt to adjust their data
-accordingly. All performance data generated creates guidelines that can 
-increase confidence in results and reduce time spent running individual 
+the number and length of promoters that are needed and can attempt to adjust 
+their data accordingly. All performance data generated creates guidelines that 
+can increase confidence in results and reduce time spent running individual 
 experimental datasets.  
 
 
@@ -314,8 +343,8 @@ of promoters in a file
 + `--numseqstep`: an integer argument (default 5) indicating the step value for
 the range of promoter numbers in a file
 	+ note that smaller step will increase program run time
-	+ note that if previous promoter number in the range + numseqstep > 
-	maxnumseq, maxnumseq will not be tested
+	+ note that if “previous promoter number in the range” + “numseqstep” > 
+	maxnumseq -- maxnumseq will not be tested
   
 These arguments are intended to give user control over how many and which 
 promoter lengths they would like to test. It is recommended to create a 
@@ -355,18 +384,17 @@ will be generated.
 	+ when `--condenseddata` is True and numiterations > 1, motif performance 
 	data for that given set of parameters is averaged to provide more accurate
     insights for motif-finder performance at those parameters
-	+ when `--condenseddata` is False and numiterations > 1, each file generated
-    with a given set of parameters will be assessed as usual and all sequence
-    performance data will be displayed 
-    fasta file will 
-    + note that numiterations must be greater than 0
+	+ when `--condenseddata` is False and numiterations > 1, each file 
+	generated with a given set of parameters will be assessed as usual and all 
+	sequence performance data will be displayed 
+       + note that numiterations must be greater than 0
  
 There are three optional arguments that may be used to modify meme search 
 conditions:
 
 + `--nummotifs`: an integer argument (default 1) that specifies how many motifs
 meme should find
-	+ note that the first motif will always be the best scoring motif (in meme) 
+	+ note that the first motif identified by MEME is the best scoring one
 	which means that when `--condenseddata` is True and `--numiterations`>1 
 	similarly scoring motifs will have their performances averaged with other 
 	motifs with the most similar performance (this is best scenario for
@@ -386,7 +414,7 @@ With all these options in mind, if a user wanted to test the effectiveness of
 meme on promoter sizes from 200bp, 300bp, 400bp, and 500bp, and on fasta files
 containing 10, 15, and 20 promoters they would use the following arguments:
 
-`--minpromoterlength 200 --maxpromoterlength 600 --promoterlengthstep 100
+`--minpromoterlength 200 --maxpromoterlength 500 --promoterlengthstep 100
  --maxnumseq 20 --minnumseq 10 --numseqstep 5`
 
 If they wanted to change the motiffrequency in the fasta file to 0.8 of all 
@@ -405,7 +433,7 @@ If all of these options are chosen for the test jasparfile, the command line
 will look like so:
 
 `memescape --jasparfile data/testjaspar.1.jaspar --memepath meme 
---minpromoterlength 200 --maxpromoterlength 600 --promoterlengthstep 100 
+--minpromoterlength 200 --maxpromoterlength 500 --promoterlengthstep 100 
 --maxnumseq 20 --minnumseq 10 --numseqstep 5 --motiffrequency 0.8 --PA 0.3 
 --PC 0.2 --PG 0.2 --PT 0.3 --numiterations 3 --condenseddata`
 
@@ -422,8 +450,8 @@ directorypath and filename ending in .csv:
 
 #### Using markov analysis function of memescape:
 
-To adapt the above scenario for markov generated promoters, first a dna 
-background file must be chosen. Using the testfile: sequence.fasta, memescape 
+To adapt the above scenario for markov generated promoters, first a DNA 
+background file must be chosen. Using the testfile: “sequence.fasta”, memescape 
 can run the same parameters with higher complexity promoters.  
 
 The purpose of the markov analysis is to create more realistic promoters that 
@@ -447,7 +475,7 @@ The resulting command would be as follows:
  --promoterlengthstep 100 --maxnumseq 20 --minnumseq 10 --numseqstep 5 
  --motiffrequnecy 0.8 --condenseddata > {directorypath}/markovmemeoutput.csv`
  
-The output of memescape with either version is a large, comma-separated table 
+The output of memescape is a large, comma-separated table 
 with many values to observe and understand. 
 
 
@@ -482,31 +510,28 @@ storage.
 Many of the data sections listed below contain information on how each value 
 was calculated and what it indicates. Before delving further into all of the 
 columns available to analyze, the main performance indicator-score-should be 
-illuminated. 
+explained.
 
 #### Notes on scoring method:
 The score for this output describes the similarity between the original 
 position weight matrix from the jaspar file and the position weight matrix
-extracted from the meme output file. Although there were several possibilites
-for scoring accuracy between these two data structures, scoring based on global
-similarity was eventually chosen as the best option. In this method the two 
-motifs are aligned for any possible overlap. Any unaligned position between the
-motifs was filled with a nucleotide distribution frequency representing the 
-promoter background sequence.
+extracted from the meme output file. There were several possibilities
+for scoring accuracy between these two data structures. The method chosen was 
+to aligned the two motifs for any possible overlap. 
 
-Each position in an alignment was scored for similarity by adapting the concept
-of Manhattan distance. For each position of the aligned position weight 
+Each position in a given alignment was scored for similarity by adapting the 
+concept of Manhattan distance. For each position of the aligned position weight 
 matrices, the difference between each nucleotide frequency was added, the 
 absolute value was taken, and the sum was subtracted from 2 (the maximum 
 possible similarity score for a single position). The similarity score of each
-position was summed to find the total score. 
+position was summed to find the total score. The highest score of all the 
+alignments was selected and returned
 
 
-*The maximum possible score for a 
-given alignment is 
-2X(len(longest\_pwm)) where longest_pwm is the longer postion weight matrix. 
-The score divided by the maximum score is the score percentage data point*
-
+The maximum possible score for a given alignment is was 2* length of the 
+shortest pwm.  
+The score divided by the maximum score is returned as the value of the
+percentage score.
 
 #### Condensed data display
 For both programs, if the `--condenseddata` output is selected, each row will
@@ -552,7 +577,7 @@ the following columns:
 13. promoter\_size: the length of the promoters in the fasta file
 14. number\_of\_sequences: the number of promoters in the fasta file
 15. model: the model used by meme to find motifs ('oops', 'zoops', or 'anr')
-16. markov\_order: The markov order meme uses to analyze the seqeunces
+16. markov\_order: The markov order meme uses to analyze the sequences
 	- will always be 0 in memeOP, will be dependent on user in markov\_memeOP
 17. iterations: The number of iterations used to calculate the average 
     performance of each motif in the condenseddata format 
@@ -597,8 +622,8 @@ reliability in performance and may be discounted or subject to more iterations.
 Users may determine their own threshold values for score and success, however
 generally higher than 75% score percentage is recommended* 
 
-If a motif is deemed 'high-performing' following a set standard, the initial 
-run parameters for the given run must be observed and recorded. Motif 
+If a motif is deemed 'high-performing' following a run, the initial 
+run parameters must be observed and recorded. Motif 
 information content, number of promoters, length of promoters, markov model, 
 and MEME model all provide information to the user on how to ensure successful 
 motif finding and high confidence data. 
@@ -680,7 +705,7 @@ finder (default is 'meme')
 found by meme (default 6)
 + `--max_w`: an integer argument that specifies the maximum width for motifs
 found by meme (default 15)  
-+ `--trim`: an integer amount specifying the length of promoter seqeunce 
++ `--trim`: an integer amount specifying the length of promoter sequence 
 trimmed from upstream of the gene start site and used to search for motifs 
 (default 200)                      
 + `--mememodel`: string argument specifying model used by motif-finder (default
@@ -691,18 +716,17 @@ motif-finder (default 0)
 be found by the meme motif-finder (default 1)
 + `--jasparfile`: a string specifying the file path to the expected PWM for
 verification experiments (no default)
-+ `--show_sites`: switch option that displays each site, postion, strand and 
++ `--show_sites`: switch option that displays each site, position, strand and 
 p-value found by meme
 
 This program is intended to be a simple way to compile and display meme results
 in the terminal. It displays the position weight matrix, its e-value, the 
 number of sites found and other values relevant to appraising a proposed 
-binding site. This program has an added feature that makes it useful for 
-verifying the appearance of expected binding sites.
+binding site. 
 
 In scenarios where the binding site is known, but the user wants to 
 confirm its presence in the promoters bioinformatically, motifomatic helps to
-quantify the search success. By providing a jasparfile containing the position
+quantify the search success. By providing a jaspar file containing the position
  weight matrix of the expected binding site, motifomatic can compare and score
   the similarity of the found site and the expected site. This quantification 
 can serve as proof of meme's ability to find binding sites for a given scenario
@@ -715,7 +739,7 @@ and its corresponding binding site.
 The parameter options for motifomatic allow for the user to select preferred
  parameters that have been proven successful in memescape. motifomatic has 
  specifically been used for finding proof of concept by compiling promoters 
- with an expected binding site and comparing the found to the expected position
+ with an expected binding site and comparing the found PWM to the known position
  weight matrix with a high level of accuracy. With the right parameters, 
  motifomatic can be used to search for unknown binding sites in co-regulated 
  promoters.
@@ -723,7 +747,7 @@ The parameter options for motifomatic allow for the user to select preferred
  
  To test-run motifomatic, a sample file of promoter sequences 3694.fa has been
  provided in the data directory. To search for a motif of width 10-15 base pairs
- in 300bp of the promoters provided, the user would select the following 
+ In a 300bp region of the promoters provided, the user would select the following 
  parameters:
  
  `--fastafile 3694.fa --min_w 10 --trim 300`
@@ -747,5 +771,3 @@ As a whole, the command would be:
  the running of meme and the collection of meme outputs into a more permanent 
  location.
 
- 
- 
