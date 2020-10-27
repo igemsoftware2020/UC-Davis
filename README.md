@@ -1,4 +1,5 @@
 # SporeCore README 
+This is the repository for the 2020 UC Davis iGEM team. This repository contains the promoter sequence data, software tools, and initial results of the research. To learn more about the research project completed, visit the [UC Davis wiki page](https://2020.igem.org/Team:UC_Davis)
 
 ## Install
 
