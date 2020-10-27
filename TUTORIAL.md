@@ -76,7 +76,7 @@ variables as described above, programs in this software package can be run
 by navigating to the UC-Davis directory and typing `python3 bin/PROGRAM-NAME`.
 If the user prefers this option, for all test commands written in this TUTORIAL
 they will type the above command instead of only typing the program name.
-	+However, if the user chooses to do this, they are still expected to 
+	+ However, if the user chooses to do this, they are still expected to 
 	install MEME as directed (which requires updating the PATH with MEME 
 	suite)**
 
