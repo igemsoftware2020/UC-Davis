@@ -47,7 +47,15 @@ and Markov analysis.
 ### 1. Setting up:
 
 1. Before installing the UC Davis software package, it is important to first 
-install the MEME suite and to make sure that it is working locally. 
+install the MEME suite (our software is tested on MEME 5.1.1)and to make sure
+that it is working locally. 
+	+ We have noticed certain MEME installation errors on Windows and 
+	occasionally on OSX. Although we cannot speak with authority on 
+	individual installation issues, we have 
+	[discovered](https://groups.google.com/g/meme-suite/c/znBqkOCqwMQ) 
+	that some of these installation issues may be bugs in the MEME test code
+	and ignored. If the linked errors look familiar, you may be able to 
+	complete your MEME installation.
 2. Download the UC Davis repository and update `PATH` to include 
 `UC-Davis/bin`.
 	+ For example, if `UC-Davis` was downloaded to your Home directory the 
@@ -76,9 +84,8 @@ variables as described above, programs in this software package can be run
 by navigating to the UC-Davis directory and typing `python3 bin/PROGRAM-NAME`.
 If the user prefers this option, for all test commands written in this TUTORIAL
 they will type the above command instead of only typing the program name.
-	+ However, if the user chooses to do this, they are still expected to 
-	install MEME as directed (which requires updating the PATH with MEME 
-	suite)**
+However, if the user chooses to do this, they are still expected to 
+install MEME as directed (which requires updating the PATH with MEME suite)**
 
  
 ### 2. Generating .fa files with mbed
