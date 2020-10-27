@@ -5,7 +5,7 @@ This is the repository for the 2020 UC Davis iGEM team. This repository contains
 
 Go to TUTORIAL.md for more installation instructions
 
-+ Must have MEME installed. This package has been tested with MEME 5.1.1
++ Must have MEME installed. This package has been tested with [MEME 5.1.1](http://meme-suite.org/doc/download.html)
 + Must have Python > 3.6
 + Put all programs from bin in PATH
 + May need to modify PYTHONPATH for programs in bin to find sporecore.motif
