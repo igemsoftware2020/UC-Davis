@@ -13,7 +13,7 @@ This tutorial includes instructions for:
 2. Generating .fa files with mbed
 	- Testing mbed
 	- Testing markov analysis of mbed
-3. Using memescape to find parameters
+3. Using memescape to find explore MEME capabilities
 	- Testing memescape
 	- Using markov analysis function of memescape
 4. Understanding program outputs and finding optimal parameters
@@ -50,17 +50,35 @@ and Markov analysis.
 install the MEME suite and to make sure that it is working locally. 
 2. Download the UC Davis repository and update `PATH` to include 
 `UC-Davis/bin`.
-3. Update `PYTHONPATH` to include `UC-Davis/sporecore` Navigate to the UC-Davis 
-directory and run the following command:
-`python3 setup.py test`
-	+ If all tests pass, you may proceed. 
-	+ If errors, contact lilymaryam5@gmail.com
-	
+	+ For example, if `UC-Davis` was downloaded to your Home directory the 
+	PATH should now include `${HOME}/UC-Davis/bin`
+		+ If UC-Davis is downloaded to a different directory the PATH
+		MUST have the correct filepath
+	+ Click [here](https://astrobiomike.github.io/unix/modifying_your_path)
+	for more information on writing a PATH 
+3. Update `PYTHONPATH` to include `UC-Davis/` 
+	+ For example, if UC-Davis is downloaded to the home directory, 
+	PYTHONPATH should now include `${HOME}/scratch/UC-Davis/`
+	+ If not done so already, make sure both PATH and PYTHONPATH are 
+	exported in the PATH file
 4. After updating the `PATH` and `PYTHONPATH`, open a new terminal and check
  that the programs in bin are working as environment variables.
 	+ Type a program name in the terminal. If UC-Davis/bin and
 	 UC-Davis/sporecore are  set up correctly, the command line prompts 
 	 for the program should appear.
+5. Navigate to the UC-Davis directory and run the following command:
+`python3 setup.py test`
+	+ If all tests pass, you may proceed. 
+	+ If errors, contact lilymaryam5@gmail.com
+	
+**Note that if a user cannot or wishes not to update their environment
+variables as described above, programs in this software package can be run 
+by navigating to the UC-Davis directory and typing `python3 bin/PROGRAM-NAME`.
+If the user prefers this option, for all test commands written in this TUTORIAL
+they will type the above command instead of only typing the program name.
+	+However, if the user chooses to do this, they are still expected to 
+	install MEME as directed (which requires updating the PATH with MEME 
+	suite)**
 
  
 ### 2. Generating .fa files with mbed
